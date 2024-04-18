@@ -1,0 +1,10 @@
+{
+  "short_name": "Credit Calculator",
+  "name": "Credit Calculator - PWA example",
+  
+  "start_url": "index.html",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/calculator",
+  "theme_color": "#3367D6"
+}

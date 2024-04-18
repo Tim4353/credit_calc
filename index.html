@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('serviceworker.js')
+        .then(function (registration) {
+          console.log('Registration successful, scope is:', registration.scope);
+        })
+        .catch(function (error) {
+          console.log('Service worker registration failed, error:', error);
+        });
+    }
+  </script>
+  <title>Credit Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: lightgray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #container {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      border: 2px solid black;
+      border-radius: 20px;
+      background-color: #a7ef67
+    }
+
+    .input_field,
+    .button {
+      margin: 10px;
+      padding: 10px;
+      width: calc(100% - 20px);
+      font-size: 16px;
+      border-radius: 10px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: blue;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  </style>
+  <script>
+    function calculateCredit() {
+      let amount = parseFloat(document.getElementById("amount").value);
+      let interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+      let months = parseInt(document.getElementById("months").value);
+
+      let monthlyInterestRate = interestRate / 12;
+      let denominator = Math.pow(1 + monthlyInterestRate, months) - 1;
+      let monthlyPayment = (amount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / denominator;
+
+      let totalPayment = monthlyPayment * months;
+
+      let result = document.getElementById("result");
+      result.innerText = `Ежемесячный платеж: ${monthlyPayment.toFixed(2)}₽  Всего выплат: ${totalPayment.toFixed(2)}₽`;
+    }
+  </script>
+</head>
+
+<body>
+  <div id="container">
+    <input type="number" id="amount" class="input_field" placeholder="Введите сумму кредита (₽)" />
+    <input type="number" id="interestRate" class="input_field" placeholder="Введите процентную ставку (%)" />
+    <input type="number" id="months" class="input_field" placeholder="Введите срок кредита (месяцы)" />
+    <button onclick="calculateCredit()" class="button">Рассчитать</button>
+    <div id="result" class="result"></div>
+  </div>
+</body>
+
+</html>
